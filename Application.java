@@ -1,15 +1,22 @@
 import Conversor.ConversorClient;
+import Recursos.HistorialYRegistro;
+
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Application {
+    static Scanner sc = new Scanner(System.in);
+    static ConversorClient c = new ConversorClient();
     public static void main(String[] args)  {
-        Scanner sc = new Scanner(System.in);
+
         final String textoSolicitar = "Ingrese el valor que desees convertir: ";
-        double resultado;
+        String resultado;
+
         String seguir = "S";
         ConversorClient c = new ConversorClient();
 
+        // Paso: Interactuando con el usuario.
         while (seguir.equalsIgnoreCase("S")) {
             try {
                 exibirMenu();
@@ -18,42 +25,38 @@ public class Application {
 
                 switch (opcionElegida) {
                     case 1:
-                        System.out.println(textoSolicitar);
-                        valorACambiar = sc.nextDouble();
-                        resultado = Double.parseDouble(c.findAll("USD", "ARS", valorACambiar));
-                        System.out.format("El valor %.2f [USD] corresponde al valor final de ==> %.2f [ARS]", valorACambiar, resultado);
+                        monedas("USD", "ARS");
                         break;
                     case 2:
-                        System.out.println(textoSolicitar);
-                        valorACambiar = sc.nextDouble();
-                        resultado = Double.parseDouble(c.findAll("ARS", "USD", valorACambiar));
-                        System.out.format("El valor %.2f [ARS] corresponde al valor final de ==> %.2f [USD]", valorACambiar, resultado);
+                        monedas("ARS", "USD");
                         break;
                     case 3:
-                        System.out.println(textoSolicitar);
-                        valorACambiar = sc.nextDouble();
-                        resultado = Double.parseDouble(c.findAll("USD", "BRL", valorACambiar));
-                        System.out.format("El valor %.2f [USD] corresponde al valor final de ==> %.2f [BRL]", valorACambiar, resultado);
+                        monedas("USD", "BRL");
                         break;
                     case 4:
-                        System.out.println(textoSolicitar);
-                        valorACambiar = sc.nextDouble();
-                        resultado = Double.parseDouble(c.findAll("BRL", "USD", valorACambiar));
-                        System.out.format("El valor %.2f [BRL] corresponde al valor final de ==> %.2f [USD]", valorACambiar, resultado);
+                        monedas("BRL", "USD");
                         break;
                     case 5:
-                        System.out.println(textoSolicitar);
-                        valorACambiar = sc.nextDouble();
-                        resultado = Double.parseDouble(c.findAll("USD", "COP", valorACambiar));
-                        System.out.format("El valor %.2f [USD] corresponde al valor final de ==> %.2f [COP]", valorACambiar, resultado);
+                        monedas("USD","COP");
                         break;
                     case 6:
-                        System.out.println(textoSolicitar);
-                        valorACambiar = sc.nextDouble();
-                        resultado = Double.parseDouble(c.findAll("COP", "USD", valorACambiar));
-                        System.out.format("El valor %.2f [COP] corresponde al valor final de ==> %.2f [USD]", valorACambiar, resultado);
+                        monedas("COP", "USD");
                         break;
                     case 7:
+                        monedas("USD", "CRC");
+                        break;
+                    case 8:
+                        monedas("CRC", "USD");
+                        break;
+                    case 9:
+                        System.out.println("Historial de conversiones: ");
+                        HistorialYRegistro.lecturaDeHistorial();
+                        break;
+                    case 10:
+                        System.out.println("Registro con marcas de tiempo: ");
+                        HistorialYRegistro.lecturaDeRegistro();
+                        break;
+                    case 11:
                         System.out.print("Finalizando...");
                         break;
                     default:
@@ -94,11 +97,26 @@ public class Application {
                 **  4) Real brasileño =>> Dólar           **
                 **  5) Dólar ==> Peso colombiano          **
                 **  6) Peso colombiano =>> Dólar          **
-                **  7) Salir                              **
+                **  7) Dólar =>> colon costarricense      **
+                **  8) colon costarricense =>> Dólor      **
+                **  9) Historial de conversiones          **
+                **  10) Registros con marcas de tiempo    **
+                **  11) Salir                             **
                 **                                        **
                 ********************************************
                 
                 Elija una opción válida:
                 """);
+    }
+
+   //Metodo con el cual podremos agregar mas monedas eficientemente
+    public static void monedas(String baseMoneda, String monedaObjetivo) throws IOException, InterruptedException {
+        System.out.println("Ingrese el valor que desees convertir: ");
+        double valorACambiar = sc.nextDouble();
+        String resultado = String.valueOf(c.findAll(baseMoneda, monedaObjetivo, valorACambiar));
+        String result = "El valor " + valorACambiar + " ["+baseMoneda+"]"+ " corresponde al valor final de ==> " +resultado +" ["+monedaObjetivo+"]";
+        System.out.println(result);
+        HistorialYRegistro.guardarEnArchivoHistorial(result);
+        HistorialYRegistro.registroConMarcasDeTiempo(result);
     }
 }
