@@ -20,5 +20,5 @@ La aplicación permite a los usuarios elegir entre varias opciones, el convertir
 ![Pantalla 4](https://github.com/user-attachments/assets/cc70c8c1-b71b-4c75-988d-5cee634b0bd4)
 
 ## Contacto
-Tu Nombre - [jaimiskytn@example.com](mailto:tu_email@example.com)  
+Tu Nombre - [jaimiskytn@gmail.com](mailto:jaimiskytn@gmail.com)  
 GitHub: [T4t1n](https://github.com/tu_usuario)
